@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Email Confirmed — MeCanIQ</title>
+<meta name="theme-color" content="#0A1526" />
+<meta name="robots" content="noindex" />
+<link rel="icon" href="assets/favicon.png" />
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<!--
+  Where the link in MeCanIQ's confirmation email lands. Supabase confirms the address first,
+  then sends the browser here with the outcome in the URL fragment (or query), e.g.
+    #access_token=...&type=email_change        confirmed (it also hands over a session - unused here)
+    #message=Confirmation+link+accepted...      first half of a two-step email change
+    #error=access_denied&error_code=otp_expired&error_description=...
+  The app points links here via EXPO_PUBLIC_EMAIL_CONFIRMED_URL (see accountService.ts); the URL
+  must also be in Supabase -> Authentication -> URL Configuration -> Redirect URLs.
+-->
+
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a href="index.html"><img src="assets/logo-mark.png" alt="MeCanIQ" class="nav-logo" /></a>
+  </div>
+</nav>
+
+<main class="confirm-page">
+  <div class="wrap">
+    <div class="confirm-card" id="card">
+      <div class="confirm-badge" id="badge" aria-hidden="true">✓</div>
+      <h1 class="confirm-title" id="title">Your email is confirmed</h1>
+      <p class="confirm-text" id="text">Thanks! Your MeCanIQ account is now linked to this email.</p>
+      <p class="confirm-text" id="detail">If you ever get a new phone, sign in with this email and your garage comes right back.</p>
+      <a class="confirm-button" id="open-app" href="mecaniq://">Open MeCanIQ</a>
+      <p class="confirm-hint" id="hint">On a computer? You're all set — just close this page.</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <img src="assets/logo-mark.png" alt="MeCanIQ" class="footer-logo" />
+    <div class="footer-links">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="support.html">Support</a>
+      <a href="mailto:mecaniq.app@gmail.com">mecaniq.app@gmail.com</a>
+    </div>
+    <p class="footer-copyright">© 2026 MeCanIQ. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // Supabase puts the outcome in the fragment (older setups use the query string) - read both.
+  var params = new URLSearchParams((location.hash || '').replace(/^#/, ''));
+  new URLSearchParams(location.search).forEach(function (v, k) { if (!params.has(k)) params.set(k, v); });
+
+  // Never leave sign-in tokens sitting in the address bar or browser history.
+  if (location.hash || location.search) history.replaceState(null, '', location.pathname);
+
+  var set = function (id, text) { document.getElementById(id).textContent = text; };
+  var card = document.getElementById('card');
+  var error = params.get('error') || params.get('error_code');
+  var code = params.get('error_code') || '';
+  var message = params.get('message') || '';
+
+  if (error) {
+    card.classList.add('is-error');
+    set('badge', '!');
+    if (/expired/i.test(code) || /expired/i.test(params.get('error_description') || '')) {
+      set('title', 'This link has expired');
+      set('text', 'Confirmation links only work for 24 hours, and each one works once.');
+    } else {
+      set('title', "We couldn't confirm your email");
+      set('text', 'This link didn’t work — it may have been used already, or copied only partly.');
+    }
+    set('detail', 'Getting a new one takes a second: open MeCanIQ, go to Settings, and tap “Resend Confirmation Email”.');
+    set('hint', 'Your account and garage are fine either way — confirming only adds the email.');
+  } else if (/other email/i.test(message)) {
+    // Two-step email change: this address is confirmed, the other one still needs its link.
+    set('title', 'Halfway there');
+    set('text', 'This address is confirmed. We also sent a link to your other email address — tap that one too to finish the change.');
+    set('detail', '');
+  }
+})();
+</script>
+</body>
+</html>
