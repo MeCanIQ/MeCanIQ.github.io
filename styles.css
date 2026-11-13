@@ -1,0 +1,1057 @@
+/* MeCanIQ website - shared styles for index.html and the public pages (privacy, terms, support,
+   delete-account, email-confirmed).
+   ---------------------------------------------------------------------------
+   Colors come from src/WelcomeStep.tsx (the app's own onboarding hero), so the site and the app
+   read as one product. Fixed-dark, no light theme: the app's hero is the same dark navy whatever
+   the in-app theme - "the same way a brand launch screen wouldn't recolor itself".
+
+   Type (2026-11-08, for reading on phones): headings, figures and buttons in Plus Jakarta Sans
+   (loaded by index.html only; the other pages fall back to the system face). Body text stays in
+   each phone's own font - SF Pro on iPhone, Roboto on Android - the most readable choice there is,
+   and it costs nothing to load. */
+
+:root {
+  --bg-top: #0A1526;
+  --bg-accent: #1B3A6B;
+  --bg-end: #0F2038;
+  --surface: #262E3B;
+  --surface-2: #1C2533;
+  --border: #3C4859;
+  --text-muted: #8B96A8;
+  --text-secondary: #B7C1D1;
+  --text: #FFFFFF;
+  --accent: #5B8DEF;
+  --accent-dark: #25407F;
+  --glow-primary: #5B9BFF;
+  --glow-teal: #2FD4C0;
+  --glow-primary-soft: rgba(91, 155, 255, 0.38);
+  --glow-teal-soft: rgba(47, 212, 192, 0.12);
+
+  /* Charts (validated with the data-viz palette checker against --surface, dark mode):
+     one hue per chart - price ranges in blue, savings in teal. */
+  --chart-blue: #5B8DEF;
+  --chart-teal: #14A898;
+  --chart-track: rgba(255, 255, 255, 0.07);
+  --chart-grid: rgba(255, 255, 255, 0.08);
+
+  /* The app's own "now" and "soon" tones (statusCritical / statusCaution, dark theme). */
+  --now-bg: #4A1416;
+  --now-border: #7A2326;
+  --now-text: #F7A8A8;
+  --soon-bg: #4A2A06;
+  --soon-border: #7A4A10;
+  --soon-text: #FDBA8C;
+
+  --green: #4ADE80;
+  --amber: #F5B41E;
+  --violet: #8B7CF6;
+
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-display: 'Plus Jakarta Sans', var(--font);
+
+  --max-width: 1120px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.6;
+  background: var(--bg-end);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  /* Android Chrome's default tap flash clashes with this dark UI; every control has its own
+     :active treatment instead. */
+  -webkit-tap-highlight-color: transparent;
+}
+
+img { max-width: 100%; display: block; }
+h1, h2, h3 { font-family: var(--font-display); }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+a:active { opacity: 0.7; }
+a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--glow-primary);
+  outline-offset: 2px;
+}
+
+.wrap { max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* ---------- Nav ---------- */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(10, 21, 38, 0.78);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+.nav.is-scrolled { border-bottom-color: var(--border); }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+.nav-home { display: inline-flex; align-items: center; min-height: 44px; }
+.nav-logo { height: 26px; width: auto; }
+.nav-links { display: flex; align-items: center; gap: 22px; }
+.nav-link { font-size: 14px; font-weight: 600; color: var(--text-secondary); padding: 12px 2px; }
+.nav-link:hover, .nav-link:active { color: var(--text); text-decoration: none; }
+/* 44px tall: the minimum comfortable tap target, centered with flex so the text stays small. */
+.nav-cta {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  background: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 20px;
+  border-radius: 22px;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.nav-cta:hover { background: var(--accent-dark); text-decoration: none; transform: translateY(-1px); }
+.nav-cta:active { background: var(--accent-dark); transform: scale(0.97); }
+
+/* ---------- Buttons ---------- */
+.btn {
+  font-family: var(--font-display);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 28px;
+  border-radius: 26px;
+  font-size: 16px;
+  font-weight: 700;
+  transition: background 0.15s ease, transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.btn:hover { text-decoration: none; transform: translateY(-1px); }
+.btn:active { transform: scale(0.97); }
+.btn-primary {
+  color: var(--text);
+  background: linear-gradient(90deg, var(--accent), #4677DA);
+  box-shadow: 0 12px 30px -12px rgba(91, 141, 239, 0.85);
+}
+.btn-primary:hover, .btn-primary:active { background: var(--accent-dark); }
+.btn-ghost {
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.04);
+}
+.btn-ghost:hover, .btn-ghost:active { border-color: var(--accent); }
+.btn-lg { min-height: 58px; padding: 0 34px; font-size: 17px; border-radius: 29px; }
+.text-link {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 12px 0;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 56px 0 88px;
+  background:
+    radial-gradient(ellipse 760px 380px at 70% 30%, var(--glow-teal-soft) 0%, transparent 60%),
+    linear-gradient(180deg, var(--bg-top) 0%, var(--bg-accent) 120px, var(--bg-top) 360px, var(--bg-top) 75%, var(--bg-end) 100%);
+  background-repeat: no-repeat;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 700px 360px at 72% 28%, var(--glow-primary-soft) 0%, transparent 60%);
+  animation: glow-pulse 8s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes glow-pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+.sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.05) 48%, transparent 62%);
+  pointer-events: none;
+}
+.hero .wrap { position: relative; z-index: 1; }
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  align-items: center;
+  gap: 48px;
+}
+.hero-copy { min-width: 0; }
+.hero-pill {
+  display: inline-block;
+  margin: 0 0 18px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: var(--glow-teal);
+  background: rgba(47, 212, 192, 0.1);
+  border: 1px solid rgba(47, 212, 192, 0.35);
+}
+.hero-title {
+  font-size: clamp(36px, 5.4vw, 60px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.06;
+  margin: 0 0 20px;
+  text-wrap: balance;
+}
+.hero-subtitle {
+  font-size: clamp(17px, 1.9vw, 20px);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.86);
+  max-width: 540px;
+  margin: 0;
+  text-wrap: pretty;
+}
+
+/* ---------- Launch waitlist (top of the hero) ----------
+   The first thing on the page (owner, 2026-11-11): the headline pill, then the form card - the one
+   bright button above the fold - with the browser demo right under it as the quieter second step. */
+.pill-launch {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 14px;
+  color: var(--text);
+  background: rgba(91, 141, 239, 0.16);
+  border-color: rgba(91, 141, 239, 0.55);
+}
+.pill-stores { display: inline-flex; gap: 5px; }
+
+/* The app icon (rounded like a home-screen icon) and the icon's gauge behind the headline. */
+.hero-brand { display: flex; align-items: center; gap: 14px; margin: 0 0 18px; }
+.hero-brand .hero-pill { margin: 0; }
+.hero-icon {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: 22.5%;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14), 0 16px 36px -12px rgba(91, 155, 255, 0.8);
+}
+.hero-headline { position: relative; isolation: isolate; }
+.hero-gauge {
+  position: absolute;
+  z-index: -1;
+  width: 400px;
+  max-width: none;
+  height: auto;
+  left: 50%;
+  top: 56%;
+  transform: translate(-50%, -50%); /* the spin-in below uses rotate/scale, so older browsers still place it right */
+  opacity: 0.3;
+  filter: drop-shadow(0 0 28px rgba(91, 155, 255, 0.45));
+  pointer-events: none;
+  animation: gauge-in 1.4s cubic-bezier(0.2, 0.7, 0.2, 1) 0.1s both;
+}
+/* It turns into place once, like a needle settling. */
+@keyframes gauge-in { from { opacity: 0; rotate: -40deg; scale: 0.9; } to { opacity: 0.3; rotate: 0deg; scale: 1; } }
+.pill-stores svg { width: 15px; height: 15px; fill: currentColor; }
+
+.waitlist {
+  margin-top: 28px;
+  max-width: 500px;
+  padding: 22px 22px 18px;
+  border-radius: 22px;
+  text-align: left;
+  background:
+    radial-gradient(ellipse 420px 180px at 50% 0%, rgba(91, 155, 255, 0.22), transparent 70%),
+    linear-gradient(180deg, rgba(19, 40, 74, 0.92), rgba(13, 28, 51, 0.92));
+  border: 1px solid rgba(91, 141, 239, 0.5);
+  box-shadow: 0 30px 70px -40px rgba(91, 141, 239, 0.75);
+}
+.waitlist-form { display: grid; gap: 12px; }
+/* display rules beat the hidden attribute on their own, so both halves restate it. */
+.waitlist-form[hidden] { display: none; }
+.waitlist-head { margin-bottom: 2px; }
+.waitlist-title { font-size: 19px; font-weight: 800; letter-spacing: -0.01em; line-height: 1.25; margin: 0 0 4px; }
+.waitlist-title:focus { outline: none; }
+.waitlist-lead { font-size: 14.5px; line-height: 1.55; color: var(--text-secondary); margin: 0; text-wrap: pretty; }
+/* 16px text: anything smaller makes iPhones zoom the page when the box is tapped. */
+.waitlist-input {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 16px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(10, 21, 38, 0.75);
+  color: var(--text);
+  font: inherit;
+  font-size: 16px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.waitlist-input::placeholder { color: var(--text-muted); }
+.waitlist-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(91, 141, 239, 0.3); }
+.waitlist-input[aria-invalid="true"] { border-color: #F87171; box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.22); }
+.waitlist-platforms { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; border: 0; padding: 0; margin: 0; min-width: 0; }
+.waitlist-platforms legend { float: left; margin-right: 4px; padding: 0; font-size: 14px; font-weight: 600; color: var(--text-secondary); }
+.waitlist-optional { font-weight: 400; color: var(--text-muted); }
+.platform-chip { position: relative; }
+.platform-chip input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; }
+.platform-chip span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.platform-chip span::before {
+  content: '';
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 1.5px solid var(--text-muted);
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+.platform-chip input:checked + span { color: var(--text); border-color: var(--accent); background: rgba(91, 141, 239, 0.18); }
+.platform-chip input:checked + span::before {
+  border: 0;
+  background: var(--accent)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.2 2.2 4.8-4.9' fill='none' stroke='%23fff' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 16px no-repeat;
+}
+.platform-chip input:focus-visible + span { outline: 2px solid var(--glow-primary); outline-offset: 2px; }
+.waitlist-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.waitlist-error { margin: 0; font-size: 14px; font-weight: 600; color: var(--now-text); }
+.waitlist-error:empty { display: none; }
+.waitlist-submit { width: 100%; border: 0; cursor: pointer; margin-top: 2px; }
+.waitlist-submit[disabled] { opacity: 0.7; cursor: default; transform: none; }
+.waitlist-fine { margin: 0; font-size: 13px; color: var(--text-muted); text-align: center; }
+.waitlist-fine a { color: var(--text-secondary); text-decoration: underline; text-underline-offset: 2px; }
+.waitlist-done { display: flex; align-items: flex-start; gap: 14px; padding: 4px 0; }
+.waitlist-done[hidden] { display: none; }
+.waitlist-check {
+  width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+  background: rgba(74, 222, 128, 0.16)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.2 2.2 4.8-4.9' fill='none' stroke='%234ADE80' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 28px no-repeat;
+}
+.waitlist-done strong { color: var(--text); }
+.waitlist-change {
+  margin-top: 6px;
+  padding: 10px 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+  cursor: pointer;
+}
+.waitlist-change:hover { text-decoration: underline; }
+
+/* Wider screens: the email box and the button share one row, so the whole card sits above the
+   fold on a 768px-tall laptop. Phones keep the stacked order: email, phone, button. */
+@media (min-width: 961px) {
+  .hero { padding-top: 40px; }
+  .waitlist-form { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "head head" "email submit" "platforms platforms" "error error" "fine fine"; }
+  .waitlist-head { grid-area: head; }
+  .waitlist-input { grid-area: email; }
+  .waitlist-submit { grid-area: submit; width: auto; margin-top: 0; padding: 0 26px; }
+  .waitlist-platforms { grid-area: platforms; }
+  .waitlist-error { grid-area: error; }
+  .waitlist-fine { grid-area: fine; text-align: left; }
+}
+.hero-demo { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 16px; margin-top: 22px; max-width: 500px; }
+.hero-demo-note { flex: 1 1 200px; margin: 0; font-size: 14px; line-height: 1.5; color: var(--text-secondary); }
+.hero-demo-note strong { color: var(--text); font-weight: 700; }
+.final-note { margin: 12px 0 0; font-size: 14px; color: var(--text-secondary); }
+
+/* The phone and its three call-outs. The call-outs restate what's on the screen. */
+.hero-visual { position: relative; justify-self: center; width: 100%; max-width: 300px; }
+.hero-phone { transform: rotate(-2deg); }
+.chip {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: rgba(28, 37, 51, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 18px 36px -16px rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-size: 12.5px;
+  line-height: 1.3;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  animation: float 6s ease-in-out infinite;
+}
+.chip strong { display: block; color: var(--text); font-size: 13px; }
+.chip-alert { top: 16%; left: -46%; }
+.chip-money { top: 44%; right: -34%; animation-delay: -2s; flex-direction: column; align-items: flex-start; gap: 0; }
+.chip-health { bottom: 10%; left: -40%; animation-delay: -4s; }
+.chip-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #F87171;
+  box-shadow: 0 0 0 4px rgba(248, 113, 113, 0.2);
+  flex-shrink: 0;
+}
+.chip-big { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: var(--green); }
+.chip-ring {
+  --p: 79;
+  width: 40px; height: 40px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: conic-gradient(var(--green) calc(var(--p) * 1%), rgba(255, 255, 255, 0.1) 0);
+  flex-shrink: 0;
+}
+.chip-ring b {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--surface-2);
+  font-family: var(--font-display);
+  font-size: 11px;
+  color: var(--text);
+}
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+/* Hero load-in: one orchestrated moment, then everything stays quiet. */
+@keyframes fade-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.hero-anim { opacity: 0; animation: fade-up 0.7s ease forwards; }
+.hero-brand.hero-anim { animation-delay: 0.05s; }
+.hero-title.hero-anim { animation-delay: 0.15s; }
+.hero-subtitle.hero-anim { animation-delay: 0.27s; }
+.waitlist.hero-anim { animation-delay: 0.36s; }
+.hero-demo.hero-anim { animation-delay: 0.48s; }
+.hero-visual.hero-anim { animation-delay: 0.3s; }
+
+/* ---------- Section rhythm ---------- */
+section { padding: 96px 0; }
+.section-eyebrow {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--glow-teal);
+  text-align: center;
+  margin: 0 0 12px;
+}
+.section-title {
+  font-size: clamp(30px, 4.2vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  line-height: 1.12;
+  text-align: center;
+  margin: 0 auto 18px;
+  max-width: 720px;
+  text-wrap: balance;
+}
+.section-lead {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  text-align: center;
+  max-width: 660px;
+  margin: 0 auto;
+  text-wrap: pretty;
+}
+.eyebrow-left, .title-left, .lead-left { text-align: left; margin-left: 0; }
+
+/* Rows and cards rise in as they scroll into view (script.js), once. */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.is-visible { opacity: 1; transform: none; }
+
+/* ---------- Why: the comparison ---------- */
+.why { background: linear-gradient(180deg, var(--bg-end), #0C1A2E); }
+.compare {
+  max-width: 920px;
+  margin: 44px auto 0;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  overflow: hidden;
+}
+.compare-head, .compare-row {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr) minmax(0, 1fr);
+}
+.compare-head > span { padding: 18px 22px; font-family: var(--font-display); font-weight: 800; font-size: 15px; }
+.compare-head-old { color: var(--text-muted); }
+.compare-head-new { background: rgba(91, 141, 239, 0.12); display: flex; align-items: center; }
+.compare-logo { height: 20px; width: auto; }
+.compare-rows { list-style: none; margin: 0; padding: 0; }
+.compare-row { border-top: 1px solid rgba(60, 72, 89, 0.7); }
+.compare-row > span { padding: 16px 22px; font-size: 15px; line-height: 1.5; }
+.compare-topic {
+  font-size: 12px !important;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  align-self: center;
+}
+.compare-old, .compare-new { position: relative; padding-left: 52px !important; }
+.compare-old { color: var(--text-muted); }
+.compare-new { color: var(--text); font-weight: 600; background: rgba(91, 141, 239, 0.12); }
+.compare-old::before, .compare-new::before {
+  content: '';
+  position: absolute;
+  left: 22px;
+  top: 17px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background-position: center; background-repeat: no-repeat; background-size: 20px;
+}
+.compare-old::before {
+  background-color: rgba(248, 113, 113, 0.14);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M7 7l6 6M13 7l-6 6' stroke='%23F87171' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+.compare-new::before {
+  background-color: rgba(74, 222, 128, 0.16);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M6 10.3l2.7 2.7 5.4-5.6' fill='none' stroke='%234ADE80' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.compare-note { margin: 14px auto 0; max-width: 920px; font-size: 13px; color: var(--text-muted); text-align: center; }
+
+/* ---------- Try it: the sign examples ---------- */
+.try-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 64px;
+  align-items: center;
+  max-width: 960px;
+}
+.try-copy { min-width: 0; }
+.try-chips { display: flex; flex-wrap: wrap; gap: 10px; margin: 26px 0 18px; }
+.try-chip {
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 22px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+.try-chip:hover { border-color: var(--accent); }
+.try-chip:active { transform: scale(0.97); }
+.try-chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); }
+.try-result { min-height: 260px; }
+/* The result card mirrors the app's opened sign: what it usually points to, how soon, the advice,
+   and what else could cause it. */
+.sign-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px;
+  animation: fade-up 0.35s ease;
+}
+.sign-heard { margin: 0 0 4px; font-size: 13px; color: var(--text-muted); }
+.sign-label { margin: 0 0 14px; font-family: var(--font-display); font-size: 18px; font-weight: 700; }
+.sign-outcome { border-radius: 14px; border: 1px solid; padding: 14px 16px; margin-bottom: 14px; }
+.sign-outcome.tone-now { background: var(--now-bg); border-color: var(--now-border); color: var(--now-text); }
+.sign-outcome.tone-soon { background: var(--soon-bg); border-color: var(--soon-border); color: var(--soon-text); }
+.sign-lead { display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; }
+.sign-part { display: block; font-family: var(--font-display); font-size: 24px; font-weight: 800; margin: 2px 0 8px; }
+.sign-pill { display: inline-block; padding: 4px 12px; border-radius: 999px; font-size: 13px; font-weight: 700; }
+.tone-now .sign-pill { background: var(--now-text); color: var(--now-bg); }
+.tone-soon .sign-pill { background: var(--soon-text); color: var(--soon-bg); }
+.sign-advice { margin: 0 0 10px; font-size: 15px; color: var(--text-secondary); }
+.sign-also { margin: 0; font-size: 14px; color: var(--text-secondary); }
+.sign-also strong { color: var(--text); }
+.sign-tag {
+  display: inline-block; margin-bottom: 12px; padding: 4px 10px; border-radius: 999px;
+  font-size: 12px; font-weight: 700; color: var(--text-secondary); background: rgba(255,255,255,0.08);
+}
+
+/* ---------- Phone frames (real app screens) ---------- */
+/* Captured from the store-screenshot garage (fictional cars and owner; real catalog and recall
+   data) by scripts/storeAssets/capture.js, shrunk to 540px webp in assets/screens/. */
+.phone-frame {
+  width: 100%;
+  background: #05090F;
+  border: 1px solid var(--border);
+  border-radius: 34px;
+  padding: 8px;
+  box-shadow: 0 30px 60px -28px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+}
+.phone-frame img { width: 100%; height: auto; aspect-ratio: 540 / 1174; border-radius: 26px; background: var(--bg-top); }
+
+/* ---------- Feature rows ---------- */
+.features { padding-bottom: 48px; }
+.feature-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  align-items: center;
+  gap: 64px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 56px 0;
+}
+.feature-row + .feature-row { border-top: 1px solid rgba(60, 72, 89, 0.6); }
+.feature-row.is-flipped { grid-template-columns: 280px minmax(0, 1fr); }
+.feature-row.is-flipped .feature-shot { order: -1; }
+.feature-copy { min-width: 0; }
+.feature-eyebrow { font-size: 13px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; }
+.feature-title { font-size: clamp(26px, 3.2vw, 34px); font-weight: 800; letter-spacing: -0.01em; line-height: 1.15; margin: 0 0 14px; text-wrap: balance; }
+.feature-lead { font-size: 18px; line-height: 1.6; color: var(--text-secondary); margin: 0 0 20px; max-width: 520px; text-wrap: pretty; }
+.feature-shot { margin: 0; justify-self: center; width: 100%; max-width: 280px; }
+.feature-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.feature-list li { position: relative; padding-left: 30px; font-size: 16px; line-height: 1.5; color: var(--text); }
+.feature-list li::before {
+  content: '';
+  position: absolute; left: 0; top: 2px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: rgba(74, 222, 128, 0.16)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M6 10.3l2.7 2.7 5.4-5.6' fill='none' stroke='%234ADE80' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 20px no-repeat;
+}
+
+/* ---------- Prices: charts and stat tiles ---------- */
+.prices { background: linear-gradient(180deg, transparent, rgba(27, 58, 107, 0.22) 40%, transparent); }
+.price-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 20px;
+  margin-top: 44px;
+  align-items: stretch;
+}
+.chart-card {
+  margin: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 24px;
+  min-width: 0;
+}
+.chart-wide { margin-top: 20px; }
+.chart-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; line-height: 1.35; margin: 0 0 4px; }
+.chart-sub { display: block; font-family: var(--font); font-size: 14px; font-weight: 400; color: var(--text-muted); margin-top: 2px; }
+.chart-rows { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 16px; }
+.chart-row { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; row-gap: 7px; column-gap: 12px; border-radius: 8px; outline-offset: 4px; }
+.chart-label { font-size: 15px; color: var(--text-secondary); }
+.chart-value { font-size: 15px; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
+/* The track carries the hairline grid (one line per axis tick) so the bars read against the axis. */
+.chart-track {
+  grid-column: 1 / -1;
+  position: relative;
+  height: 14px;
+  border-radius: 7px;
+  background-color: var(--chart-track);
+}
+.chart-track.has-grid {
+  background-image: linear-gradient(to right, var(--chart-grid) 1px, transparent 1px);
+  background-size: calc(100% / var(--ticks, 5)) 100%;
+}
+.chart-bar { position: absolute; top: 0; bottom: 0; border-radius: 4px; }
+.range-bar { background: var(--chart-blue); }
+/* A bar that grows from the baseline: square there, rounded at the data end. */
+.save-bar { left: 0; background: var(--chart-teal); border-radius: 0 4px 4px 0; }
+.chart-axis { position: relative; height: 18px; margin-top: 8px; font-size: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.chart-axis span { position: absolute; top: 0; transform: translateX(-50%); }
+.chart-axis span:first-child { transform: none; }
+.chart-axis span:last-child { transform: translateX(-100%); }
+/* Hover/focus detail - an extra, never the only way to read a value (the labels and the table carry it). */
+.chart-row[data-tip]:hover::after, .chart-row[data-tip]:focus-visible::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 6px);
+  z-index: 2;
+  max-width: 100%;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #0B1422;
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.4;
+  box-shadow: 0 12px 24px -12px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+.chart-table { margin-top: 18px; font-size: 14px; color: var(--text-secondary); }
+.chart-table summary { cursor: pointer; font-weight: 700; color: var(--accent); padding: 10px 0; min-height: 44px; display: flex; align-items: center; }
+.chart-table table { width: 100%; border-collapse: collapse; margin-top: 6px; font-variant-numeric: tabular-nums; }
+.chart-table th, .chart-table td { text-align: left; padding: 8px 6px; border-top: 1px solid var(--border); }
+.chart-table th { color: var(--text-muted); font-weight: 600; font-size: 13px; }
+.chart-table td + td, .chart-table th + th { text-align: right; }
+.chart-fine { margin: 18px auto 0; max-width: 760px; font-size: 13px; color: var(--text-muted); text-align: center; }
+.inline-cta { text-align: center; margin-top: 28px; }
+
+.stat-stack { display: grid; gap: 14px; min-width: 0; }
+.stat-tile {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px 22px;
+  overflow: hidden;
+}
+.stat-tile::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
+.tile-amber::before { background: var(--amber); }
+.tile-blue::before { background: var(--chart-blue); }
+.tile-green::before { background: var(--green); }
+.tile-value {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: clamp(30px, 3.4vw, 38px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.tile-amber .tile-value { background-image: linear-gradient(90deg, #FCD34D, #F59E0B); }
+.tile-blue .tile-value { background-image: linear-gradient(90deg, #93B8FF, #5B8DEF); }
+.tile-green .tile-value { background-image: linear-gradient(90deg, #86EFAC, #22C55E); }
+.tile-text { margin: 0; font-size: 15px; line-height: 1.5; color: var(--text-secondary); }
+.tile-source { display: inline-block; margin-top: 8px; font-size: 13px; font-weight: 600; padding: 4px 0; }
+
+/* ---------- Built for your car ---------- */
+.fleet-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px 22px;
+  max-width: 760px;
+  margin: 40px auto 0;
+}
+.fleet-car { width: 100%; height: auto; aspect-ratio: 1 / 0.62; object-fit: contain; transition: transform 0.25s ease; }
+.fleet-car:hover { transform: translateY(-3px) scale(1.04); }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  max-width: 900px;
+  margin: 36px auto 0;
+}
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 24px 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+.stat-value {
+  font-family: var(--font-display);
+  font-size: clamp(34px, 4.4vw, 48px);
+  font-weight: 800;
+  line-height: 1.05;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.grad-blue { background-image: linear-gradient(90deg, #93B8FF, #5B8DEF); }
+.grad-teal { background-image: linear-gradient(90deg, #5EEAD4, #14B8A6); }
+.grad-amber { background-image: linear-gradient(90deg, #FCD34D, #F59E0B); }
+.grad-green { background-image: linear-gradient(90deg, #86EFAC, #22C55E); }
+.stat-label { margin: 8px 0 0; font-size: 14px; line-height: 1.45; color: var(--text-secondary); }
+/* "back to about" reads before the year, so that one label sits above its number. */
+.stat:nth-child(3) .stat-label { order: -1; margin: 0 0 8px; }
+.built-note { margin-top: 28px; font-size: 16px; }
+
+/* ---------- Showcase ---------- */
+/* Desktop: 4-up. Phone: a horizontal scroll-snap row, the next screen peeking in as the cue. */
+.showcase-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; margin-top: 44px; }
+.phone-mock { margin: 0; display: flex; flex-direction: column; align-items: center; min-width: 0; }
+.phone-mock .phone-frame { max-width: 220px; }
+.showcase-caption { margin-top: 16px; font-size: 15px; line-height: 1.5; color: var(--text-secondary); text-align: center; }
+.showcase-caption-eyebrow { display: block; font-family: var(--font-display); font-size: 13px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; color: var(--text); margin-bottom: 2px; }
+
+/* ---------- Privacy cards ---------- */
+.benefits-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; max-width: 920px; margin: 44px auto 0; }
+.benefit-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 26px 24px;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.benefit-card.is-visible { opacity: 1; transform: translateY(0); }
+.benefit-card:hover { border-color: var(--accent); box-shadow: 0 0 0 1px rgba(91,141,239,0.25), 0 12px 30px -14px rgba(91,141,239,0.5); }
+.benefit-icon { width: 46px; height: 46px; border-radius: 13px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+.benefit-icon svg { width: 22px; height: 22px; }
+.icon-blue { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); }
+.icon-teal { background: linear-gradient(135deg, #14B8A6, #0F766E); }
+.icon-violet { background: linear-gradient(135deg, var(--violet), #5B21B6); }
+.benefit-title { font-size: 18px; font-weight: 700; margin: 0 0 8px; }
+.benefit-text { font-size: 15px; line-height: 1.55; color: var(--text-secondary); margin: 0; text-wrap: pretty; }
+
+/* ---------- Plans ---------- */
+.plans { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; max-width: 780px; margin: 44px auto 0; }
+.plan { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: 22px; padding: 30px 28px; min-width: 0; }
+.plan-featured { border-color: var(--accent); box-shadow: 0 0 0 1px rgba(91, 141, 239, 0.3), 0 22px 44px -22px rgba(91, 141, 239, 0.7); }
+.plan-badge {
+  position: absolute; top: -13px; left: 28px; margin: 0;
+  padding: 4px 12px; border-radius: 999px;
+  font-size: 12px; font-weight: 800; letter-spacing: 0.4px;
+  color: #052E16; background: linear-gradient(90deg, #86EFAC, #4ADE80);
+}
+.plan-name { font-size: 14px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--text-secondary); margin: 0 0 8px; }
+.plan-price { font-family: var(--font-display); font-size: 46px; font-weight: 800; line-height: 1.1; margin: 0 0 8px; }
+.plan-per { font-size: 17px; font-weight: 600; color: var(--text-secondary); margin-left: 2px; }
+.plan-sub { font-size: 15px; line-height: 1.55; color: var(--text-secondary); margin: 0 0 18px; text-wrap: pretty; }
+.plan .feature-list { margin-top: 18px; }
+.plans-note { margin-top: 26px; font-size: 15px; }
+
+/* ---------- FAQ ---------- */
+.faq-list { max-width: 740px; margin: 40px auto 0; display: grid; gap: 12px; }
+.faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; }
+.faq-item[open] { border-color: rgba(91, 141, 239, 0.6); }
+.faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 60px;
+  padding: 14px 22px;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after { content: '+'; flex-shrink: 0; font-size: 24px; font-weight: 400; color: var(--accent); transition: transform 0.2s ease; }
+.faq-item[open] summary::after { transform: rotate(45deg); }
+.faq-item p { margin: 0; padding: 0 22px 20px; font-size: 16px; line-height: 1.65; color: var(--text-secondary); text-wrap: pretty; }
+
+/* ---------- Final call to action ---------- */
+.download { padding-top: 48px; }
+.final-card {
+  position: relative;
+  text-align: center;
+  padding: 56px 28px;
+  border-radius: 28px;
+  background:
+    radial-gradient(ellipse 600px 260px at 50% 0%, rgba(91, 155, 255, 0.35), transparent 70%),
+    linear-gradient(180deg, #13284A, #0D1C33);
+  border: 1px solid rgba(91, 141, 239, 0.45);
+  box-shadow: 0 30px 80px -40px rgba(91, 141, 239, 0.6);
+}
+.final-card .btn { margin-top: 30px; }
+.store-badges { display: flex; justify-content: center; gap: 16px; margin-top: 30px; flex-wrap: wrap; }
+.store-badge { min-width: 200px; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 14px; padding: 12px 22px; cursor: default; user-select: none; }
+.store-badge svg { width: 26px; height: 26px; flex-shrink: 0; fill: var(--text-secondary); }
+.store-badge-text { text-align: left; }
+.store-badge-eyebrow { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--text-muted); }
+.store-badge-name { display: block; font-size: 15px; font-weight: 700; color: var(--text); margin-top: 1px; }
+.notify-link { display: inline-block; margin-top: 22px; padding: 13px 6px; font-size: 15px; font-weight: 600; color: var(--accent); }
+
+/* ---------- Footer ---------- */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 40px 0;
+}
+footer .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+.footer-logo { height: 20px; width: auto; opacity: 0.85; }
+.footer-links {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.footer-links a {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  /* Padding grows the real tap target to a comfortable size; the matching
+     negative margin cancels its visual footprint so the row's spacing/
+     alignment looks the same as it would with no padding at all - same
+     "min-height, not a bigger-looking button" idea as .nav-cta above. */
+  padding: 13px 4px;
+  margin: -13px -4px;
+}
+.footer-links a:hover,
+.footer-links a:active { color: var(--text); }
+.footer-copyright {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  width: 100%;
+  margin-top: 4px;
+}
+
+/* ---------- Legal pages (privacy.html / terms.html) ---------- */
+.legal-page { padding: 64px 0 96px; }
+.legal-page .wrap { max-width: 720px; }
+.legal-back {
+  display: inline-block;
+  margin-bottom: 28px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.legal-title {
+  font-size: clamp(26px, 4vw, 36px);
+  font-weight: 800;
+  margin: 0 0 6px;
+}
+.legal-effective {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0 0 40px;
+}
+.legal-body {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  white-space: pre-line;
+}
+.legal-body strong {
+  display: block;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin: 32px 0 10px;
+}
+.legal-body strong:first-child { margin-top: 0; }
+
+/* ---------- Email confirmed (email-confirmed.html) ---------- */
+.confirm-page { padding: 72px 0 110px; }
+.confirm-page .wrap { max-width: 520px; }
+.confirm-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 40px 28px 32px;
+  text-align: center;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+}
+.confirm-badge {
+  width: 64px; height: 64px; margin: 0 auto 18px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px; font-weight: 800; color: #fff;
+  background: linear-gradient(135deg, #22C55E, #15803D);
+  box-shadow: 0 8px 22px rgba(34, 197, 94, 0.35);
+}
+.confirm-card.is-error .confirm-badge {
+  background: linear-gradient(135deg, #F5B41E, #B45309);
+  box-shadow: 0 8px 22px rgba(245, 180, 30, 0.3);
+}
+.confirm-title { font-size: clamp(24px, 4vw, 30px); font-weight: 800; margin: 0 0 12px; }
+.confirm-text { font-size: 15px; line-height: 1.65; color: var(--text-secondary); margin: 0 0 10px; }
+.confirm-text:empty { display: none; }
+.confirm-button {
+  display: inline-block; margin-top: 18px;
+  padding: 14px 30px; border-radius: 12px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+  color: #fff; font-weight: 700; font-size: 15px;
+}
+.confirm-button:hover { text-decoration: none; filter: brightness(1.08); }
+.confirm-hint { font-size: 13px; color: var(--text-muted); margin: 16px 0 0; }
+
+
+/* ---------- Responsive ---------- */
+@media (max-width: 960px) {
+  /* Hero stacks: the words and the button first, the phone after. Call-outs tuck in so nothing
+     sticks out past the screen edge. */
+  .hero { padding: 36px 0 72px; }
+  .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 44px; text-align: center; }
+  .hero-subtitle { margin: 0 auto; }
+  /* Centered with the words; the card's own contents stay left-aligned so the form reads top-down. */
+  .waitlist, .hero-demo { margin-left: auto; margin-right: auto; }
+  .hero-brand { flex-direction: column; gap: 14px; }
+  .hero-gauge { width: 300px; top: 70%; }
+  .hero-demo { justify-content: center; }
+  .hero-demo-note { flex-basis: 100%; }
+  .hero-visual { max-width: 250px; }
+  .chip-alert { left: -26%; top: 10%; }
+  .chip-money { right: -24%; }
+  .chip-health { left: -24%; bottom: 8%; }
+  .price-grid { grid-template-columns: minmax(0, 1fr); }
+  .stat-stack { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 860px) {
+  .benefits-grid { grid-template-columns: minmax(0, 1fr); max-width: 520px; }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .try-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .try-shot { display: none; }
+  .feature-row, .feature-row.is-flipped { grid-template-columns: minmax(0, 1fr); gap: 32px; padding: 44px 0; max-width: 560px; }
+  .feature-row.is-flipped .feature-shot { order: 0; }
+  .feature-shot { max-width: 250px; }
+  .showcase-grid { display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; gap: 18px; padding-bottom: 8px; }
+  .phone-mock { flex: 0 0 200px; scroll-snap-align: start; }
+  /* The comparison becomes one card per topic: the old way, then the MeCanIQ way, together. */
+  .compare-head { display: none; }
+  .compare-row { grid-template-columns: minmax(0, 1fr); padding: 16px 18px; }
+  .compare-row > span { padding: 0; }
+  .compare-topic { margin-bottom: 8px; }
+  .compare-old, .compare-new { padding: 6px 0 6px 32px !important; background: none; }
+  .compare-old::before, .compare-new::before { left: 0; top: 7px; }
+  .compare-new { font-size: 16px !important; }
+}
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  .wrap { padding: 0 20px; }
+  section { padding: 68px 0; }
+  .hero-title { font-size: clamp(34px, 9.4vw, 42px); }
+  .hero { padding-top: 24px; }
+  .hero-gauge { width: 290px; top: 72%; }
+  .waitlist { margin-top: 24px; padding: 18px 16px 14px; border-radius: 20px; }
+  .waitlist-title { font-size: 18px; }
+  /* "I'll use it on" gets its own line so the two choices sit side by side. */
+  .waitlist-platforms legend { width: 100%; margin: 0 0 2px; }
+  .pill-launch { font-size: 13px; padding: 6px 12px; gap: 7px; letter-spacing: 0; }
+  .pill-stores svg { width: 13px; height: 13px; }
+  .hero-demo .btn { flex: 1 1 100%; }
+  /* The examples become one swipeable row running to the screen edges, so the answer card shows sooner. */
+  .try-chips { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity; scroll-padding: 0 20px; margin: 22px -20px 16px; padding: 0 20px 6px; scrollbar-width: none; }
+  .try-chips::-webkit-scrollbar { display: none; }
+  .try-chip { flex: 0 0 auto; white-space: nowrap; scroll-snap-align: start; }
+  .chip { font-size: 11.5px; padding: 8px 11px; gap: 8px; }
+  .chip strong { font-size: 12px; }
+  .chip-big { font-size: 18px; }
+  .chip-alert { left: -18%; }
+  .chip-money { right: -16%; }
+  .chip-health { left: -16%; }
+  .section-lead, .feature-lead { font-size: 17px; }
+  .stat-stack { grid-template-columns: minmax(0, 1fr); }
+  .chart-card { padding: 20px 16px; }
+  .fleet-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px 10px; }
+  .plans { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+  .store-badges { flex-direction: column; align-items: center; }
+  .final-card { padding: 44px 20px; border-radius: 22px; }
+  .final-card .btn { width: 100%; }
+  footer .wrap { flex-direction: column; align-items: flex-start; }
+  /* Only the try button stays in the bar on a phone - the section links would crowd it. */
+  .nav-link { display: none; }
+}
+
+/* Small phones: the store logos step aside so the headline stays on one line. */
+@media (max-width: 400px) {
+  .pill-stores { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .hero::before { animation: none; opacity: 0.8; }
+  .benefit-card, .reveal { transition: none; opacity: 1; transform: none; }
+  .fleet-car, .btn, .try-chip, .faq-item summary::after { transition: none; }
+  .hero-anim { animation: none; opacity: 1; }
+  .hero-gauge { animation: none; }
+  .chip { animation: none; }
+  .sign-card { animation: none; }
+}
